@@ -7,4 +7,5 @@ import java.util.UUID
 
 @Repository
 interface UsuarioRepository : JpaRepository<Usuario, UUID>{
+    fun existsByUsername(username: String): Boolean
 }

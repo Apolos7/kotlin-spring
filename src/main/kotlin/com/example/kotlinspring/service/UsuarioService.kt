@@ -2,26 +2,23 @@ package com.example.kotlinspring.service
 
 import com.example.kotlinspring.dto.UsuarioDTO
 import com.example.kotlinspring.exception.GlobalExceptionHanler
-import com.example.kotlinspring.exception.UsuarioNaoEncontrado
 import com.example.kotlinspring.mapper.dtoToUsuario
 import com.example.kotlinspring.repository.UsuarioRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.net.URI
 import java.util.UUID
 
 @Service
-class UsuarioService{
-
-    lateinit var usuarioRepository: UsuarioRepository
-
+class UsuarioService(
+    private val usuarioRepository: UsuarioRepository
+){
     fun create(usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
-        val usuario = usuarioDTO.dtoToUsuario(usuarioDTO)
-        return if (usuarioRepository.existsById(usuario.id)){
+        return if (usuarioRepository.existsByUsername(usuarioDTO.username)){
            ResponseEntity.badRequest().body(GlobalExceptionHanler::handleException)
         }else{
-            ResponseEntity.created(URI.create("/${usuario.id}")).build()
+            usuarioRepository.save(usuarioDTO.dtoToUsuario(usuarioDTO))
+            ResponseEntity.created(URI.create("/${usuarioDTO.id}")).build()
         }
     }
 
@@ -31,7 +28,6 @@ class UsuarioService{
         }else{
             ResponseEntity.ok(usuarioRepository.findById(id).get())
         }
-
     }
 
     fun update(id: UUID,usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
