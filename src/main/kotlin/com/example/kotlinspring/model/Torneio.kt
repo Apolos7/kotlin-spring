@@ -11,7 +11,7 @@ import javax.persistence.Id
 import javax.persistence.OneToMany
 import javax.validation.constraints.NotBlank
 
-@Entity
+@Entity(name = "tb_torneio")
 data class Torneio(
     @Id
     @GeneratedValue

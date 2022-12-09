@@ -15,15 +15,15 @@ data class Inscricao(
     @GeneratedValue
     val id: UUID = UUID.randomUUID(),
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Inscricao::class)
     @JoinColumn(name = "categoria_id", nullable = false)
     val categoria_id: UUID = UUID.randomUUID(),
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Inscricao::class)
     @JoinColumn(name = "usuario_id1", nullable = false)
     val usuario_id1: UUID = UUID.randomUUID(),
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Inscricao::class)
     @JoinColumn(name = "usuario_id2", nullable = false)
     val usuario_id_2: UUID = UUID.randomUUID(),
 

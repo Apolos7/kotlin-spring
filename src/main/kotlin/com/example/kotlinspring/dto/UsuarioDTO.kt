@@ -14,11 +14,11 @@ data class UsuarioDTO(
     val nome: String = "",
 
     @field: NotBlank(message = "Login é obrigatório")
-    val login: String,
+    val login: String = "",
 
     @field: NotBlank(message = "Senha é obrigatório")
     @field: Size(min = 6, message = "Senha não pode ser inferior a 6 digitos")
-    var senha: String,
+    var senha: String = "",
 
     val inscricoes: List<Inscricao> = ArrayList(),
 

@@ -12,18 +12,18 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
-@Entity
+@Entity(name = "tb_categoria")
 data class Categoria(
     @Id
     @GeneratedValue
     val id: UUID = UUID.randomUUID(),
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Categoria::class)
     @JoinColumn(name = "torneio_id", nullable = false)
     val torneio_id: UUID = UUID.randomUUID(),
 
     @Column(nullable = false)
-    val nome: String? = "",
+    val nome: String = "",
 
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "id")
     val inscricoes: List<Inscricao> = ArrayList()

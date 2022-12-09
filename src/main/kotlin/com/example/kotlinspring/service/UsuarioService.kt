@@ -14,7 +14,7 @@ class UsuarioService(
     private val usuarioRepository: UsuarioRepository
 ){
     fun create(usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
-        return if (usuarioRepository.existsByUsername(usuarioDTO.login)){
+        return if (usuarioRepository.existsByLogin(usuarioDTO.login)){
            ResponseEntity.badRequest().build()
         }else{
             usuarioRepository.save(usuarioDTO.dtoToUsuario(usuarioDTO))
