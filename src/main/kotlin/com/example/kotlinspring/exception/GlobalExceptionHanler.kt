@@ -9,13 +9,13 @@ import java.util.HashMap
 
 
 @ControllerAdvice
-class GlobalExceptionHanler {
+class GlobalExceptionHandler {
 
     @ExceptionHandler(value = [MethodArgumentNotValidException::class])
-    fun handleException(ex: MethodArgumentNotValidException): ResponseEntity<HashMap<String,String>> {
+    fun handleException(ex: MethodArgumentNotValidException): ResponseEntity<Any> {
         val errors: HashMap<String,String> = HashMap<String,String>()
-        ex.bindingResult.allErrors.forEach {
-            errors[it.objectName] = it.defaultMessage.toString()
+        ex.bindingResult.fieldErrors.forEach {
+            errors[it.field] = it.defaultMessage.toString()
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors)
     }

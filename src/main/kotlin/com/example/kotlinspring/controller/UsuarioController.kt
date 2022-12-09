@@ -15,7 +15,7 @@ import javax.validation.Valid
 
 
 @RestController
-@RequestMapping("v1/api/usuarios")
+@RequestMapping("v1/api/usuario")
 class UsuarioController(
     private val usuarioService: UsuarioService
 ){

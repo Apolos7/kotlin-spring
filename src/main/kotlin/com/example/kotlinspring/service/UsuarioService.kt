@@ -1,7 +1,7 @@
 package com.example.kotlinspring.service
 
 import com.example.kotlinspring.dto.UsuarioDTO
-import com.example.kotlinspring.exception.GlobalExceptionHanler
+import com.example.kotlinspring.exception.GlobalExceptionHandler
 import com.example.kotlinspring.mapper.dtoToUsuario
 import com.example.kotlinspring.repository.UsuarioRepository
 import org.springframework.http.ResponseEntity
@@ -14,8 +14,8 @@ class UsuarioService(
     private val usuarioRepository: UsuarioRepository
 ){
     fun create(usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
-        return if (usuarioRepository.existsByUsername(usuarioDTO.username)){
-           ResponseEntity.badRequest().body(GlobalExceptionHanler::handleException)
+        return if (usuarioRepository.existsByUsername(usuarioDTO.login)){
+           ResponseEntity.badRequest().build()
         }else{
             usuarioRepository.save(usuarioDTO.dtoToUsuario(usuarioDTO))
             ResponseEntity.created(URI.create("/${usuarioDTO.id}")).build()
