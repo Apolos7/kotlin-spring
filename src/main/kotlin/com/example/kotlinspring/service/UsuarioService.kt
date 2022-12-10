@@ -1,10 +1,12 @@
 package com.example.kotlinspring.service
 
 import com.example.kotlinspring.dto.UsuarioDTO
-import com.example.kotlinspring.exception.GlobalExceptionHandler
 import com.example.kotlinspring.mapper.dtoToUsuario
 import com.example.kotlinspring.repository.UsuarioRepository
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import java.net.URI
 import java.util.UUID
@@ -12,7 +14,7 @@ import java.util.UUID
 @Service
 class UsuarioService(
     private val usuarioRepository: UsuarioRepository
-){
+): UserDetailsService{
     fun create(usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
         return if (usuarioRepository.existsByLogin(usuarioDTO.login)){
            ResponseEntity.badRequest().build()
@@ -49,4 +51,12 @@ class UsuarioService(
         }
     }
 
+    override fun loadUserByUsername(username: String?): UserDetails {
+        val usuario = username?.let { usuarioRepository.findByLogin(it) }
+
+        if (usuario == null)
+            throw UsernameNotFoundException("Usuário não encontrado: ${usuario?.login}")
+
+        return usuario
+    }
 }
