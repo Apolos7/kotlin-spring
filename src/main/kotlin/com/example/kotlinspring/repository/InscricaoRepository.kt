@@ -7,4 +7,5 @@ import java.util.UUID
 
 @Repository
 interface InscricaoRepository : JpaRepository<Inscricao, UUID>{
+    fun findIncricoesByUsuarioIdOrUsuarioId2(id: UUID): List<Inscricao>
 }

@@ -9,4 +9,5 @@ import java.util.UUID
 interface UsuarioRepository : JpaRepository<Usuario, UUID>{
     fun existsByLogin(login: String): Boolean
     fun findByLogin(login: String): Usuario
+
 }

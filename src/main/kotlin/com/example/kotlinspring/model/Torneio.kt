@@ -3,6 +3,7 @@ package com.example.kotlinspring.model
 import java.io.Serializable
 import java.time.Instant
 import java.util.ArrayList
+import java.util.Optional
 import java.util.UUID
 import javax.persistence.CascadeType
 import javax.persistence.Column
