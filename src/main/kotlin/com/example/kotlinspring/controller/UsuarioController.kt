@@ -4,6 +4,7 @@ import com.example.kotlinspring.dto.UsuarioDTO
 import com.example.kotlinspring.service.UsuarioService
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -23,15 +24,19 @@ class UsuarioController(
     @PostMapping("/")
     fun create(@Valid @RequestBody usuario: UsuarioDTO) = usuarioService.create(usuario)
 
+    @GetMapping("/")
+    fun findByLogin(@RequestParam("login") login: String) = usuarioService.findByLogin(login)
+
     @GetMapping("/{id}")
-    fun findById(@RequestParam("id") id: UUID) = usuarioService.findById(id)
+    fun findById(@PathVariable("id") id: UUID) = usuarioService.findById(id)
+
     @GetMapping("/{id}/inscricoes")
-    fun findAllInscricoes(@RequestParam("id") id: UUID) = usuarioService.findAllInscricoes(id)
+    fun findAllInscricoes(@PathVariable("id") id: UUID) = usuarioService.findAllInscricoes(id)
 
     @PutMapping("/{id}")
-    fun update(@Valid @RequestParam("id") id: UUID, @RequestBody usuario: UsuarioDTO) = usuarioService.update(id,usuario)
+    fun update(@Valid @PathVariable("id") id: UUID, @RequestBody usuario: UsuarioDTO) = usuarioService.update(id,usuario)
 
     @DeleteMapping("/{id}")
-    fun delete(@RequestParam("id") id: UUID) = usuarioService.delete(id)
+    fun delete(@PathVariable("id") id: UUID) = usuarioService.delete(id)
 
 }

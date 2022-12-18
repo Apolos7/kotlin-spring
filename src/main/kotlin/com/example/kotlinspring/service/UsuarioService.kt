@@ -18,8 +18,9 @@ class UsuarioService(
     private val usuarioRepository: UsuarioRepository,
     private val inscricaoRepository: InscricaoRepository
 ): UserDetailsService{
+
     fun create(usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
-        return if (usuarioRepository.existsByLogin(usuarioDTO.login)){
+        return if (!usuarioRepository.existsByLogin(usuarioDTO.login)){
            ResponseEntity.badRequest().build()
         }else{
             usuarioRepository.save(usuarioDTO.dtoToUsuario(usuarioDTO))
@@ -28,11 +29,20 @@ class UsuarioService(
     }
 
     fun findById(id: UUID): ResponseEntity<Any> {
-        return if (usuarioRepository.existsById(id)){
+        return if (!usuarioRepository.existsById(id)){
             ResponseEntity.notFound().build()
         }else{
             ResponseEntity.ok(usuarioRepository.findById(id).get())
         }
+    }
+
+    fun findByLogin(login: String): ResponseEntity<Any>{
+       return when{
+           !usuarioRepository.existsByLogin(login) -> ResponseEntity.notFound().build()
+           else -> {
+               ResponseEntity.ok().body(usuarioRepository.findByLogin(login))
+           }
+       }
     }
 
     fun findAllInscricoes(id: UUID): ResponseEntity<Any>{

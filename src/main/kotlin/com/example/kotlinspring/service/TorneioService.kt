@@ -12,7 +12,7 @@ class TorneioService (
     fun findAll(): ResponseEntity<Any> = ResponseEntity.ok()
         .body(torneioRepository.findAll())
 
-    fun findAllCategorias(id: UUID): ResponseEntity<Any> =  ResponseEntity.ok()
+    fun findAllCategoriasByTorneio(id: UUID): ResponseEntity<Any> =  ResponseEntity.ok()
         .body(torneioRepository.findById(id).get().categorias)
 
 }

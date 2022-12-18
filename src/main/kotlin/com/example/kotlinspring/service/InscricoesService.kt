@@ -20,28 +20,10 @@ class InscricoesService (
     private val usuarioRepository: UsuarioRepository
     ){
 
-    fun realizarInscricao(torneioId: UUID, inscricaoDTO: InscricaoDTO): Any {
-
+    fun realizarInscricao(categoriaId: UUID, usuarioId1: UUID, usuarioId2: UUID): ResponseEntity<Any> {
+        val inscricaoDTO: InscricaoDTO = InscricaoDTO(categoriaId = categoriaId, usuarioId1 = usuarioId1, usuarioId2 = usuarioId2)
         val inscricao = Inscricao().dtoToInsncricao(inscricaoDTO)
-
-        val torneio = torneioRepository.findById(torneioId).get()
-        val categorias = torneio.categorias
-        val categoria = categorias.stream().filter { it.id == inscricao.categoriaId }.findFirst()
-
-        return when {
-            !usuarioRepository.existsById(inscricao.usuarioId1) -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado ID: ${inscricao.usuarioId1}!")
-            !usuarioRepository.existsById(inscricao.usuarioId2)-> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado ID: ${inscricao.usuarioId1}")
-            !torneioRepository.existsById(torneioId) -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Torneio não encontrado ID: $torneioId")
-            torneioRepository.existsById(torneioId) -> {
-               return if (categoria.isPresent) {
-                    inscricaoRepository.save(inscricao)
-                    ResponseEntity.status(HttpStatus.CREATED).body(inscricao)
-                }else{
-                   ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada")
-                }
-            }
-            else -> throw IllegalArgumentException("Não foi possível realizar a Inscrição")
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(inscricao)
     }
 
 }

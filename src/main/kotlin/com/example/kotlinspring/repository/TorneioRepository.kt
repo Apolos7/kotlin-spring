@@ -9,4 +9,5 @@ import java.util.UUID
 
 @Repository
 interface TorneioRepository : JpaRepository<Torneio, UUID>{
+    fun findAllCategoriasByTorneio(id: UUID): List<Categoria>
 }
