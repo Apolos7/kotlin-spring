@@ -16,20 +16,16 @@ import javax.validation.Valid
 
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("api/v1/usuario")
 class UsuarioController(
     private val usuarioService: UsuarioService
 ){
-
-    @PostMapping("/")
-    fun create(@Valid @RequestBody usuario: UsuarioDTO) = usuarioService.create(usuario)
 
     @GetMapping("/")
     fun findByLogin(@RequestParam("login") login: String) = usuarioService.findByLogin(login)
 
     @GetMapping("/{id}")
     fun findById(@PathVariable("id") id: UUID) = usuarioService.findById(id)
-
     @GetMapping("/{id}/inscricoes")
     fun findAllInscricoes(@PathVariable("id") id: UUID) = usuarioService.findAllInscricoes(id)
 

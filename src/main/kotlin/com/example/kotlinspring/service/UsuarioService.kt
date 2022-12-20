@@ -3,6 +3,7 @@ package com.example.kotlinspring.service
 
 import com.example.kotlinspring.dto.UsuarioDTO
 import com.example.kotlinspring.mapper.dtoToUsuario
+import com.example.kotlinspring.model.Inscricao
 import com.example.kotlinspring.model.Usuario
 import com.example.kotlinspring.repository.InscricaoRepository
 import com.example.kotlinspring.repository.UsuarioRepository
@@ -12,11 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import java.net.URI
 import java.util.UUID
+import java.util.stream.Collectors
 
 @Service
 class UsuarioService(
     private val usuarioRepository: UsuarioRepository,
-    private val inscricaoRepository: InscricaoRepository
 ): UserDetailsService{
 
     fun create(usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
@@ -24,7 +25,7 @@ class UsuarioService(
            ResponseEntity.badRequest().build()
         }else{
             usuarioRepository.save(usuarioDTO.dtoToUsuario(usuarioDTO))
-            ResponseEntity.created(URI.create("/${usuarioDTO.id}")).build()
+            ResponseEntity.created(URI.create("usuario/${usuarioDTO.id}")).build()
         }
     }
 
@@ -45,11 +46,6 @@ class UsuarioService(
        }
     }
 
-    fun findAllInscricoes(id: UUID): ResponseEntity<Any>{
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(inscricaoRepository.findIncricoesByUsuarioIdOrUsuarioId2(id))
-    }
-
     fun update(id: UUID, usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
         val usuario = usuarioDTO.dtoToUsuario(usuarioDTO)
         return if (usuarioRepository.existsById(id)) {
@@ -67,6 +63,10 @@ class UsuarioService(
         }else{
             ResponseEntity.notFound().build()
         }
+    }
+
+    fun findAllInscricoes(id: UUID): MutableList<Inscricao>? {
+        return usuarioRepository.findById(id).get().inscricoes.stream().collect(Collectors.toList())
     }
 
     override fun loadUserByUsername(username: String?): Usuario? {

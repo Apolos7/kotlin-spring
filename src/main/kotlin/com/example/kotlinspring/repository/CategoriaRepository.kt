@@ -9,5 +9,4 @@ import java.util.UUID
 
 @Repository
 interface CategoriaRepository : JpaRepository<Categoria, UUID>{
-    fun findAllInscricoes(): List<Inscricao>
 }

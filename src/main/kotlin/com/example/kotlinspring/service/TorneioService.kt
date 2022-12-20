@@ -9,6 +9,7 @@ import java.util.UUID
 class TorneioService (
     private val torneioRepository: TorneioRepository,
     ) {
+
     fun findAll(): ResponseEntity<Any> = ResponseEntity.ok()
         .body(torneioRepository.findAll())
 
