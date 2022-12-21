@@ -1,12 +1,9 @@
 package com.example.kotlinspring.model
 
-
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.io.Serializable
 import java.time.Instant
-import java.util.ArrayList
 import java.util.UUID
 import javax.persistence.*
 
@@ -29,14 +26,11 @@ data class Usuario(
         @field: OneToMany(cascade = [CascadeType.ALL], mappedBy = "id")
         val inscricoes: List<Inscricao> = mutableListOf(),
 
-        @field: OneToMany(cascade = [CascadeType.ALL], mappedBy = "id")
-        val roles: List<Role> = mutableListOf(),
-
         val createAt: Instant = Instant.now(),
         var updateAt: Instant = Instant.now()
 
 ): Serializable, UserDetails {
-        override fun getAuthorities(): List<Role> = roles
+        override fun getAuthorities(): MutableList<SimpleGrantedAuthority> = mutableListOf()
         override fun getPassword(): String = senha
         override fun getUsername(): String = login
         override fun isAccountNonExpired(): Boolean  = true

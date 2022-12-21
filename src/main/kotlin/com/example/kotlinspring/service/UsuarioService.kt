@@ -5,9 +5,7 @@ import com.example.kotlinspring.dto.UsuarioDTO
 import com.example.kotlinspring.mapper.dtoToUsuario
 import com.example.kotlinspring.model.Inscricao
 import com.example.kotlinspring.model.Usuario
-import com.example.kotlinspring.repository.InscricaoRepository
 import com.example.kotlinspring.repository.UsuarioRepository
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
@@ -69,7 +67,5 @@ class UsuarioService(
         return usuarioRepository.findById(id).get().inscricoes.stream().collect(Collectors.toList())
     }
 
-    override fun loadUserByUsername(username: String?): Usuario? {
-        return username?.let { usuarioRepository.findByLogin(it) }
-    }
+    override fun loadUserByUsername(username: String?): Usuario? = username?.let { usuarioRepository.findByLogin(it) }
 }

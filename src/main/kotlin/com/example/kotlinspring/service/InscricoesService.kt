@@ -21,6 +21,7 @@ class InscricoesService(
 ){
     fun createInscricao(categoriaId: UUID, token: String, usuarioDto: UsuarioDTO): ResponseEntity<Any> {
         val login = jwtUtils.extractLogin(token)
+
         return when{
             usuarioRepository.existsByLogin(usuarioDto.login) -> {
                 val usuario1 = usuarioRepository.findByLogin(login)
