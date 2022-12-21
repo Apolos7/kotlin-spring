@@ -19,8 +19,8 @@ class UsuarioService(
 ): UserDetailsService{
 
     fun create(usuarioDTO: UsuarioDTO): ResponseEntity<Any>{
-        return if (!usuarioRepository.existsByLogin(usuarioDTO.login)){
-           ResponseEntity.badRequest().build()
+        return if (usuarioRepository.existsByLogin(usuarioDTO.login)){
+           ResponseEntity.badRequest().body("Usuário já cadastrado")
         }else{
             usuarioRepository.save(usuarioDTO.dtoToUsuario(usuarioDTO))
             ResponseEntity.created(URI.create("usuario/${usuarioDTO.id}")).build()

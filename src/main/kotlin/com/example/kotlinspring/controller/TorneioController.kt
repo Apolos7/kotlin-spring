@@ -11,7 +11,7 @@ import java.util.UUID
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/torneios")
+@RequestMapping("api/v1/torneios")
 @PreAuthorize("")
 class TorneioController(
     private val torneioService: TorneioService,

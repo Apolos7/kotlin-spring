@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 import javax.validation.Valid
 
@@ -19,7 +18,7 @@ class AuthController(
     private val usuarioService: UsuarioService
 ) {
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     fun login(@Valid @RequestBody authDTO: AuthDTO): ResponseEntity<Any>{
         return authService.auth(authDTO)
     }
