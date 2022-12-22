@@ -2,6 +2,7 @@ package com.example.kotlinspring.mapper
 
 import com.example.kotlinspring.dto.UsuarioDTO
 import com.example.kotlinspring.model.Usuario
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 fun Usuario.usuarioToDTO(usuario: Usuario): UsuarioDTO{
     return UsuarioDTO(
@@ -18,7 +19,7 @@ fun UsuarioDTO.dtoToUsuario(usuarioDTO: UsuarioDTO): Usuario{
         usuarioDTO.id,
         usuarioDTO.nome,
         usuarioDTO.login,
-        usuarioDTO.senha,
+        BCryptPasswordEncoder().encode(usuarioDTO.senha),
         usuarioDTO.inscricoes
     )
 }

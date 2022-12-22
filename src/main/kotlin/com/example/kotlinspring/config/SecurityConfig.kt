@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import javax.servlet.http.HttpServletResponse
 
 
 @EnableWebSecurity
@@ -30,6 +31,12 @@ class SecurityConfig(
     fun securityFilterChains(http: HttpSecurity) : SecurityFilterChain {
         http
             .csrf().disable()
+            .cors().disable()
+
+            .exceptionHandling().authenticationEntryPoint { request, response, authException -> run {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                authException.message)
+            } }.and()
 
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "api/v1/auth/**").permitAll().and()

@@ -20,7 +20,7 @@ class JwtUtils {
 
     private fun createToken(claims: HashMap<String, Any>, usuario: Usuario): String{
         return Jwts.builder()
-            .setSubject(usuario.login)
+            .setSubject(usuario.id.toString())
             .claim("authorities",usuario.authorities)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))

@@ -20,13 +20,11 @@ class InscricoesService(
     private val jwtUtils: JwtUtils
 ){
     fun createInscricao(categoriaId: UUID, token: String, usuarioDto: UsuarioDTO): ResponseEntity<Any> {
-        val login = jwtUtils.extractLogin(token)
+        val tokenId = UUID.fromString(jwtUtils.extractLogin(token))
 
         return when{
             usuarioRepository.existsByLogin(usuarioDto.login) -> {
-                val usuario1 = usuarioRepository.findByLogin(login)
-                val usuario2 = usuarioRepository.findByLogin(usuarioDto.login)
-                val inscricaoDTO= InscricaoDTO(categoriaId = categoriaId, usuarioId1 = usuario1.id, usuarioId2 = usuario2.id)
+                val inscricaoDTO= InscricaoDTO(categoriaId = categoriaId, usuarioId1 = tokenId, usuarioId2 = usuarioDto.id)
                 val inscricao = Inscricao().dtoToInsncricao(inscricaoDTO)
                 inscricaoRepository.save(inscricao)
                 ResponseEntity.status(HttpStatus.CREATED).body(inscricao)
