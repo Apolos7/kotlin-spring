@@ -4,12 +4,14 @@ import com.example.kotlinspring.filter.JwtAuthFilter
 import com.example.kotlinspring.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -31,22 +33,19 @@ class SecurityConfig(
     fun securityFilterChains(http: HttpSecurity) : SecurityFilterChain {
         http
             .csrf().disable()
-            .cors().disable()
 
-            .exceptionHandling().authenticationEntryPoint { request, response, authException -> run {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                authException.message)
-            } }.and()
+            .authorizeRequests { request -> run{
+                request.antMatchers(HttpMethod.POST, "api/v1/auth/**").permitAll()
+                request.anyRequest().authenticated()
+            } }
 
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "api/v1/auth/**").permitAll().and()
+            .exceptionHandling().authenticationEntryPoint { request, response, authException -> run{
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.message)
+            } }
 
-            .authorizeRequests()
-            .antMatchers("api/v1/**")
-            .authenticated().and()
-
+            .and()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)

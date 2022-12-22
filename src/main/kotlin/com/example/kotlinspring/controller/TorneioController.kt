@@ -5,6 +5,7 @@ import com.example.kotlinspring.dto.UsuarioDTO
 import com.example.kotlinspring.service.InscricoesService
 import com.example.kotlinspring.service.TorneioService
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import java.util.UUID
 import javax.validation.Valid
