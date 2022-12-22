@@ -35,7 +35,8 @@ class SecurityConfig(
             .csrf().disable()
 
             .authorizeRequests { request -> run{
-                request.antMatchers(HttpMethod.POST, "api/v1/auth/**").permitAll()
+                request.antMatchers(HttpMethod.POST,"/api/v1/auth/**").permitAll()
+                request.antMatchers("/banco/**").permitAll() // Deixa o banco brinca
                 request.anyRequest().authenticated()
             } }
 
@@ -50,6 +51,9 @@ class SecurityConfig(
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
 
+        // Usar somente em testes!
+        // desativando frameOptions do header no momento de devolver a resposta (Correção H2)
+        http.headers().frameOptions().disable();
         return http.build()
     }
 
